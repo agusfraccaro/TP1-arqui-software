@@ -40,6 +40,20 @@ services:
             - "/var/run:/var/run:rw"
             - "/sys:/sys:ro"
             - "/var/lib/docker/:/var/lib/docker:ro"
+    node:
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        ports:
+            - "3000:3000"
+#    node:
+#        image: node:18-alpine
+#        volumes:
+#            - ./app:opt/app
+#        working_dir: /app
+#        command: npm start
+#        ports:
+#            - "3000:3000"
 
 volumes:
     grafana_config:
