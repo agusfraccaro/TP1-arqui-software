@@ -399,7 +399,7 @@
       "renderer": "flot",
       "seriesOverrides": [
         {
-          "alias": "asPercent(stats.gauges.cadvisor.1c24-tp-1_node_1.memory_usage, 34359738368)",
+          "alias": "asPercent(stats.gauges.cadvisor.tp1-arqui-software_node_1.memory_usage, 34359738368)",
           "yaxis": 1
         }
       ],
@@ -497,8 +497,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "1c24-tp-1_node_1",
-          "value": "1c24-tp-1_node_1"
+          "text": "tp1-arqui-software_node_1",
+          "value": "tp1-arqui-software_node_1"
         },
         "error": null,
         "hide": 0,
@@ -509,41 +509,41 @@
         "options": [
           {
             "selected": true,
-            "text": "1c24-tp-1_node_1",
-            "value": "1c24-tp-1_node_1"
+            "text": "tp1-arqui-software_node_1",
+            "value": "tp1-arqui-software_node_1"
           },
           {
             "selected": false,
-            "text": "1c24-tp-1_node_2",
-            "value": "1c24-tp-1_node_2"
+            "text": "tp1-arqui-software_node_2",
+            "value": "tp1-arqui-software_node_2"
           },
           {
             "selected": false,
-            "text": "1c24-tp-1_node_3",
-            "value": "1c24-tp-1_node_3"
+            "text": "tp1-arqui-software_node_3",
+            "value": "tp1-arqui-software_node_3"
           },
           {
             "selected": false,
-            "text": "1c24-tp-1_cadvisor_1",
-            "value": "1c24-tp-1_cadvisor_1"
+            "text": "tp1-arqui-software_cadvisor_1",
+            "value": "tp1-arqui-software_cadvisor_1"
           },
           {
             "selected": false,
-            "text": "1c24-tp-1_grafana_1",
-            "value": "1c24-tp-1_grafana_1"
+            "text": "tp1-arqui-software_grafana_1",
+            "value": "tp1-arqui-software_grafana_1"
           },
           {
             "selected": false,
-            "text": "1c24-tp-1_graphite_1",
-            "value": "1c24-tp-1_graphite_1"
+            "text": "tp1-arqui-software_graphite_1",
+            "value": "tp1-arqui-software_graphite_1"
           },
           {
             "selected": false,
-            "text": "1c24-tp-1_nginx_1",
-            "value": "1c24-tp-1_nginx_1"
+            "text": "tp1-arqui-software_nginx_1",
+            "value": "tp1-arqui-software_nginx_1"
           }
         ],
-        "query": "1c24-tp-1_node_1, 1c24-tp-1_node_2, 1c24-tp-1_node_3, 1c24-tp-1_cadvisor_1, 1c24-tp-1_grafana_1, 1c24-tp-1_graphite_1,  1c24-tp-1_nginx_1, 1c24-tp-1_bbox_1",
+        "query": "tp1-arqui-software_node_1, tp1-arqui-software_node_2, tp1-arqui-software_node_3, tp1-arqui-software_cadvisor_1, tp1-arqui-software_grafana_1, tp1-arqui-software_graphite_1,  tp1-arqui-software_nginx_1, tp1-arqui-software_bbox_1",
         "queryValue": "",
         "skipUrlSync": false,
         "type": "custom"
