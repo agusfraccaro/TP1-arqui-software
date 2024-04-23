@@ -44,8 +44,6 @@ services:
         build:
             context: ./
             dockerfile: Dockerfile
-        ports:
-            - "3000:3000"
 #    node:
 #        image: node:18-alpine
 #        volumes:
