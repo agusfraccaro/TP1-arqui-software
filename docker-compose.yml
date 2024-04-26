@@ -44,6 +44,7 @@ services:
         build:
             context: ./
             dockerfile: Dockerfile
+        container_name: tp1-arqui-software_node_1
         links:
             - redis
         
@@ -51,14 +52,6 @@ services:
         image: 'redis:alpine'
         ports:
             - "6379:6379"
-#    node:
-#        image: node:18-alpine
-#        volumes:
-#            - ./app:opt/app
-#        working_dir: /app
-#        command: npm start
-#        ports:
-#            - "3000:3000"
 
 volumes:
     grafana_config:
