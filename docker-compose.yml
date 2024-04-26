@@ -44,6 +44,13 @@ services:
         build:
             context: ./
             dockerfile: Dockerfile
+        links:
+            - redis
+        
+    redis:
+        image: 'redis:alpine'
+        ports:
+            - "6379:6379"
 #    node:
 #        image: node:18-alpine
 #        volumes:
