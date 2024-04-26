@@ -2,6 +2,7 @@ import {nanoid} from 'nanoid';
 import express from 'express';
 import axios from 'axios';
 import redis from 'redis'
+import { TimeMetrics } from './metrics.js';
 
 const app = express();
 const redisClient = redis.createClient({
@@ -21,6 +22,7 @@ app.get('/ping', (req, res) => {
 });
 
 app.get('/dictionary', async (req, res) => {
+    const metrics = new TimeMetrics('dictionary');
     const {word} = req.query;
     const {cached} = req.query;
     if (!word) {
@@ -36,7 +38,9 @@ app.get('/dictionary', async (req, res) => {
                 return res.status(200).send(JSON.parse(cachedData));
             }
         }
-        const response = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+        const response = await metrics.measure(async () => {
+            return await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+        });
         const { phonetics, meanings } = response.data[0];
         try {
             console.log(`Saving word on cache: ${word}`)
@@ -53,8 +57,16 @@ app.get('/dictionary', async (req, res) => {
 });
 
 app.get('/spaceflight_news', async (req, res) => {
+    const metrics = new TimeMetrics('spaceflight_news');
     try {
-        const response = await axios.get('https://api.spaceflightnewsapi.net/v4/articles?limit=5');
+        const response = await metrics.measure(async () => {
+            return await axios.get('https://api.spaceflightnewsapi.net/v4/articles', {
+                params: {
+                    limit: 5
+                }
+            });
+        });
+
         let titles = [];
 
         response.data.results.forEach(article => {
@@ -71,8 +83,11 @@ app.get('/spaceflight_news', async (req, res) => {
 });
 
 app.get('/quote', async (req, res) => {
+    const metrics = new TimeMetrics('quote');
     try {
-        const response = await axios.get('https://api.quotable.io/random');
+        const response = await metrics.measure(async () => {
+            return await axios.get('https://api.quotable.io/random');
+        });
 
         const { content, author } = response.data;
             
