@@ -28,7 +28,7 @@ export class TimeMetrics {
     send_endpoint_total_time(start_time) {
         const duration = Date.now() - start_time;
 
-        this.client.timing(`total.time`, duration, (error) => {
+        this.client.gauge(`total.time`, duration, (error) => {
             if (error) {
                 console.error('Error al enviar métrica:', error);
             } else {
