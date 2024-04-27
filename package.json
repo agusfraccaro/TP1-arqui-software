@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "^1.6.8",
     "express": "^4.19.2",
+    "hot-shots": "^10.0.0",
     "nanoid": "^5.0.7",
     "redis": "^3.0.2"
   }
