@@ -2,6 +2,7 @@ import {nanoid} from 'nanoid';
 import express from 'express';
 import axios from 'axios';
 import redis from 'redis'
+import hotShots from 'hot-shots'
 
 const app = express();
 const redisClient = redis.createClient({
@@ -9,10 +10,24 @@ const redisClient = redis.createClient({
     port: 6379
 });
 
+const statsdClient = new hotShots.StatsD({
+    host: 'graphite',
+    port: 8125,
+});
 const id = nanoid();
 
 app.use((req, res, next) => {
     res.setHeader('X-API-Id', id);
+    const start = Date.now();
+    const endpoint = req.path;
+    
+    res.on('finish', () => {
+        const duration = Date.now() - start;
+        statsdClient.timing(`api.${endpoint}.response_time`, duration);
+        statsdClient.increment('test');
+        console.log(`api.${endpoint}.response_time`)
+        console.log(duration)
+    });
     next();
 });
 
@@ -40,6 +55,7 @@ app.get('/dictionary', async (req, res) => {
         const { phonetics, meanings } = response.data[0];
         try {
             console.log(`Saving word on cache: ${word}`)
+            console.log(JSON.stringify({ phonetics, meanings }))
             await redisClient.setex(word, 60, JSON.stringify({ phonetics, meanings }))
         } catch (error) {
             console.log(`Error on setting redis value ${error}`)
