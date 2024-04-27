@@ -15,17 +15,17 @@ const redisClient = redis.createClient({
 });
 
 const id = nanoid();
-const metricsClient = new Metrics() 
+const metricsClient = new Metrics() ;
 
 // Middleware
 app.use((req, res, next) => {
     const start = Date.now();
-    const endpoint = req.path
+    const endpoint = req.path;
     res.setHeader('X-API-Id', id);
     
     res.on('finish', () => {
-        metricsClient.send_endpoint_total_time(endpoint, start)
-    })
+        metricsClient.send_endpoint_total_time(endpoint, start);
+    });
     next();
 });
 
@@ -47,7 +47,7 @@ app.get('/dictionary', async (req, res) => {
         if (cached === "true") {
             const cachedData = await getDataFromRedis(word);
             if (cachedData) {
-                await metricsClient.send_cache_hit_metric()
+                await metricsClient.send_cache_hit_metric();
                 console.log(`Data was gathered from the cache for word: ${word}`);
                 return res.status(200).send(JSON.parse(cachedData));
             }

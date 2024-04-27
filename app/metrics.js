@@ -20,19 +20,19 @@ export class Metrics {
         const end = process.hrtime(start);
         const duration = end[0] * 1e3 + end[1] * 1e-6;
 
-        this.log(`${endpoint}.dependency.time`, duration);
-        console.log(`Dependency duration ${duration}`)
+        this.log(`${endpoint.substring(1)}.dependency.time`, duration);
+        console.log(`Dependency duration ${duration}`);
         return result;
     }
 
     send_endpoint_total_time(endpoint, start_time) {
         const duration = Date.now() - start_time;
 
-        this.log(`${endpoint}.total.time`, duration);
-        console.log(`Total duration ${duration}`)
+        this.log(`${endpoint.substring(1)}.total.time`, duration);
+        console.log(`Total duration ${duration}`);
     }
 
     send_cache_hit_metric() {
-        this.log('cache.hit', 1)
+        this.log('cache.hit', 1);
     }
 }
