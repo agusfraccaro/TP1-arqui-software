@@ -6,8 +6,12 @@ export class Metrics {
         this.client = new StatsD({
             host: 'graphite',
             port: 8125,
-            prefix: 'api_metrics.'
+            prefix: 'api_metrics.',
+            errorHandler: function (error) {
+                console.log("Socket errors caught here: ", error);
+            }
         });
+        
     }
 
     log(metric_name, value) {
@@ -33,6 +37,6 @@ export class Metrics {
     }
 
     send_cache_hit_metric() {
-        this.log('cache.hit', 1);
+        this.client.increment('cache.hit')
     }
 }
