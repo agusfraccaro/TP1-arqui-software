@@ -35,7 +35,7 @@ scenarios:
   - name: dictionary_base
     flow:
       - get:
-          url: '/dictionary?word=test&cached=false'
+          url: '/dictionary?word={{ word }}&cached=false'
     phases:
       - name: Ramp
         duration: 30
@@ -66,10 +66,68 @@ scenarios:
         arrivalRate: 20
         rampTo: 50
 
+  - name: dictionary_replicated
+    flow:
+      - get:
+          url: '/dictionary?word={{ word }}&cached=false'
+    phases:
+      - name: Ramp
+        duration: 30
+        arrivalRate: 1
+        rampTo: 5
+      - name: Plain
+        duration: 60
+        arrivalRate: 5
+      - name: Ramp
+        duration: 60
+        arrivalRate: 5
+        rampTo: 20
+      - name: Ramp
+        duration: 60
+        arrivalRate: 20
+        rampTo: 50
+
+  - name: dictionary_cached_1
+    flow:
+      - get:
+          url: '/dictionary?word={{ word }}&cached=true'
+    phases:
+      - name: Ramp
+        duration: 30
+        arrivalRate: 1
+        rampTo: 5
+      - name: Ramp
+        duration: 60
+        arrivalRate: 5
+        rampTo: 20
+      - name: Ramp
+        duration: 60
+        arrivalRate: 20
+        rampTo: 50
+      
+  - name: dictionary_replicated_1
+    flow:
+      - get:
+          url: '/dictionary?word={{ word }}&cached=false'
+    phases:
+      - name: Ramp
+        duration: 30
+        arrivalRate: 1
+        rampTo: 5
+      - name: Ramp
+        duration: 60
+        arrivalRate: 5
+        rampTo: 20
+      - name: Ramp
+        duration: 60
+        arrivalRate: 20
+        rampTo: 50
+
   - name: spaceflight_news_base
     flow:
       - get:
           url: '/spaceflight_news'
+  
 
   - name: quotes_base
     flow:
