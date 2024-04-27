@@ -111,10 +111,7 @@
       },
       "targets": [
         {
-          "datasource": {
-            "type": "graphite",
-            "uid": "c784dcfc-ad3d-491b-82f3-fe264c7edd03"
-          },
+          "datasource": "Graphite",
           "refId": "A",
           "target": "stats.gauges.api_metrics.dictionary.total.time"
         }
@@ -198,10 +195,7 @@
       },
       "targets": [
         {
-          "datasource": {
-            "type": "graphite",
-            "uid": "c784dcfc-ad3d-491b-82f3-fe264c7edd03"
-          },
+          "datasource": "Graphite",
           "refId": "A",
           "target": "stats.gauges.api_metrics.quote.total.time"
         }
@@ -285,10 +279,7 @@
       },
       "targets": [
         {
-          "datasource": {
-            "type": "graphite",
-            "uid": "c784dcfc-ad3d-491b-82f3-fe264c7edd03"
-          },
+          "datasource": "Graphite",
           "refId": "A",
           "target": "stats.gauges.api_metrics.spaceflight_news.total.time"
         }
@@ -383,10 +374,7 @@
       },
       "targets": [
         {
-          "datasource": {
-            "type": "graphite",
-            "uid": "c784dcfc-ad3d-491b-82f3-fe264c7edd03"
-          },
+          "datasource": "Graphite",
           "refId": "A",
           "target": "stats.gauges.api_metrics.dictionary.dependency.time"
         }
@@ -470,10 +458,7 @@
       },
       "targets": [
         {
-          "datasource": {
-            "type": "graphite",
-            "uid": "c784dcfc-ad3d-491b-82f3-fe264c7edd03"
-          },
+          "datasource": "Graphite",
           "refId": "A",
           "target": "stats.gauges.api_metrics.spaceflight_news.dependency.time"
         }
@@ -557,10 +542,7 @@
       },
       "targets": [
         {
-          "datasource": {
-            "type": "graphite",
-            "uid": "c784dcfc-ad3d-491b-82f3-fe264c7edd03"
-          },
+          "datasource": "Graphite",
           "refId": "A",
           "target": "stats.gauges.api_metrics.quote.dependency.time"
         }
@@ -629,10 +611,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "datasource": {
-            "type": "graphite",
-            "uid": "c784dcfc-ad3d-491b-82f3-fe264c7edd03"
-          },
+          "datasource": "Graphite",
           "refCount": 0,
           "refId": "B",
           "target": "aliasByMetric(stats.gauges.$server.scenarioCounts.*)",
@@ -725,35 +704,23 @@
       "steppedLine": false,
       "targets": [
         {
-          "datasource": {
-            "type": "graphite",
-            "uid": "c784dcfc-ad3d-491b-82f3-fe264c7edd03"
-          },
+          "datasource": "Graphite",
           "refId": "B",
           "target": "alias(sumSeries(stats.gauges.$server.errors.*), 'Errored')",
           "textEditor": true
         },
         {
-          "datasource": {
-            "type": "graphite",
-            "uid": "c784dcfc-ad3d-491b-82f3-fe264c7edd03"
-          },
+          "datasource": "Graphite",
           "refId": "A",
           "target": "alias(stats.gauges.$server.codes.200, 'Completed')"
         },
         {
-          "datasource": {
-            "type": "graphite",
-            "uid": "c784dcfc-ad3d-491b-82f3-fe264c7edd03"
-          },
+          "datasource": "Graphite",
           "refId": "C",
           "target": "alias(stats.gauges.$server.pendingRequests, 'Pending')"
         },
         {
-          "datasource": {
-            "type": "graphite",
-            "uid": "c784dcfc-ad3d-491b-82f3-fe264c7edd03"
-          },
+          "datasource": "Graphite",
           "refId": "D",
           "target": "alias(stats.gauges.$server.codes.429, 'Limited')"
         }
@@ -837,19 +804,13 @@
       "steppedLine": false,
       "targets": [
         {
-          "datasource": {
-            "type": "graphite",
-            "uid": "c784dcfc-ad3d-491b-82f3-fe264c7edd03"
-          },
+          "datasource": "Graphite",
           "refCount": 0,
           "refId": "C",
           "target": "alias(stats.gauges.$server.scenarioDuration.max, 'Upper')"
         },
         {
-          "datasource": {
-            "type": "graphite",
-            "uid": "c784dcfc-ad3d-491b-82f3-fe264c7edd03"
-          },
+          "datasource": "Graphite",
           "refCount": 0,
           "refId": "B",
           "target": "alias(stats.gauges.$server.scenarioDuration.median, 'Median')"
@@ -957,10 +918,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "datasource": {
-            "type": "graphite",
-            "uid": "c784dcfc-ad3d-491b-82f3-fe264c7edd03"
-          },
+          "datasource": "Graphite",
           "hide": false,
           "refCount": 0,
           "refId": "C",
@@ -968,10 +926,7 @@
           "textEditor": false
         },
         {
-          "datasource": {
-            "type": "graphite",
-            "uid": "c784dcfc-ad3d-491b-82f3-fe264c7edd03"
-          },
+          "datasource": "Graphite",
           "hide": false,
           "refCount": 0,
           "refId": "B",
