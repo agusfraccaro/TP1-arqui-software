@@ -58,7 +58,7 @@ app.get('/dictionary', async (req, res) => {
         const { phonetics, meanings } = response.data[0];
         try {
             console.log(`Saving word on cache: ${word}`);
-            await redisClient.setex(word, 60, JSON.stringify({ phonetics, meanings }));
+            await redisClient.setex(word, 1, JSON.stringify({ phonetics, meanings }));
         } catch (error) {
             console.log(`Error on setting redis value ${error}`);
         }

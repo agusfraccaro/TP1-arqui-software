@@ -44,7 +44,6 @@ services:
         build:
             context: ./
             dockerfile: Dockerfile
-        container_name: tp1-arqui-software_node_1
         links:
             - redis
         
