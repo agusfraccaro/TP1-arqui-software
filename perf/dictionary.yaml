@@ -14,6 +14,10 @@ config:
           - "football"
           - "artillery"
           - "dream"
+          - "soup"
+          - "hand"
+          - "ball"
+          - "water"
   pool: 50 # All HTTP requests from all virtual users will be sent over the same connections
     
 
@@ -24,35 +28,36 @@ scenarios:
           url: '/dictionary?word={{ word }}&cached=false'
     phases:
       - name: Ramp
-        duration: 30
+        duration: 60
         arrivalRate: 1
         rampTo: 5
       - name: Plain
-        duration: 60
+        duration: 120
         arrivalRate: 5
 
   - name: peak_sustained
     flow:
       - get:
-          url: '/dictionary?word={{ word }}&cached=true'
+          url: '/dictionary?word={{ word }}&cached=false'
     phases:
       - name: Ramp
-        duration: 30
+        duration: 60
         arrivalRate: 1
         rampTo: 5
       - name: Plain
-        duration: 60
+        duration: 120
         arrivalRate: 5
       - name: Ramp
-        duration: 60
+        duration: 120
         arrivalRate: 5
         rampTo: 20
       - name: Ramp
-        duration: 60
+        duration: 120
         arrivalRate: 20
         rampTo: 50
 
-  - name: peak_hard
+
+  - name: mid
     flow:
       - get:
           url: '/dictionary?word={{ word }}&cached=false'
@@ -72,8 +77,9 @@ scenarios:
         duration: 60
         arrivalRate: 20
         rampTo: 50
+  
 
-  - name: peak_sustained_mid
+  - name: peak_hard
     flow:
       - get:
           url: '/dictionary?word={{ word }}&cached=true'
