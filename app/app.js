@@ -2,8 +2,12 @@ import {nanoid} from 'nanoid';
 import express from 'express';
 import axios from 'axios';
 import redis from 'redis';
-import { TimeMetrics } from './metrics.js';
+import { Metrics } from './metrics.js';
 
+//Const
+
+
+// Init
 const app = express();
 const redisClient = redis.createClient({
     host: 'redis',
@@ -11,9 +15,17 @@ const redisClient = redis.createClient({
 });
 
 const id = nanoid();
+const metricsClient = new Metrics() ;
 
+// Middleware
 app.use((req, res, next) => {
+    const start = Date.now();
+    const endpoint = req.path;
     res.setHeader('X-API-Id', id);
+    
+    res.on('finish', () => {
+        metricsClient.send_endpoint_total_time(endpoint, start);
+    });
     next();
 });
 
@@ -22,8 +34,7 @@ app.get('/ping', (req, res) => {
 });
 
 app.get('/dictionary', async (req, res) => {
-    const metrics = new TimeMetrics('dictionary');
-    const start = Date.now();
+    
 
     const {word} = req.query;
     const {cached} = req.query;
@@ -36,25 +47,23 @@ app.get('/dictionary', async (req, res) => {
         if (cached === "true") {
             const cachedData = await getDataFromRedis(word);
             if (cachedData) {
+                await metricsClient.send_cache_hit_metric();
                 console.log(`Data was gathered from the cache for word: ${word}`);
                 return res.status(200).send(JSON.parse(cachedData));
             }
         }
-        const response = await metrics.measure_dependency(async () => {
+        const response = await metricsClient.measure_dependency(req.path, async () => {
             return await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
         });
         const { phonetics, meanings } = response.data[0];
         try {
             console.log(`Saving word on cache: ${word}`);
-            console.log(JSON.stringify({ phonetics, meanings }));
             await redisClient.setex(word, 60, JSON.stringify({ phonetics, meanings }));
         } catch (error) {
             console.log(`Error on setting redis value ${error}`);
         }
         
         console.log(`Data was gathered from the service for word: ${word}`);
-
-        metrics.send_endpoint_total_time(start);
 
         res.status(200).send({ phonetics, meanings });
     } catch(error){
@@ -63,11 +72,10 @@ app.get('/dictionary', async (req, res) => {
 });
 
 app.get('/spaceflight_news', async (req, res) => {
-    const metrics = new TimeMetrics('spaceflight_news');
     const start = Date.now();
 
     try {
-        const response = await metrics.measure_dependency(async () => {
+        const response = await metricsClient.measure_dependency(req.path, async () => {
             return await axios.get('https://api.spaceflightnewsapi.net/v4/articles', {
                 params: {
                     limit: 5
@@ -83,7 +91,6 @@ app.get('/spaceflight_news', async (req, res) => {
             }
         });
 
-        metrics.send_endpoint_total_time(start);
         res.status(200).send(titles);
     } catch(error){
         res.status(500).send('Error');
@@ -92,17 +99,15 @@ app.get('/spaceflight_news', async (req, res) => {
 });
 
 app.get('/quote', async (req, res) => {
-    const metrics = new TimeMetrics('quote');
     const start = Date.now();
 
     try {
-        const response = await metrics.measure_dependency(async () => {
+        const response = await metricsClient.measure_dependency(req.path, async () => {
             return await axios.get('https://api.quotable.io/random');
         });
 
         const { content, author } = response.data;
 
-        metrics.send_endpoint_total_time(start);
         res.status(200).send({ content, author });
     } catch(error){
         res.status(500).send('Error');
