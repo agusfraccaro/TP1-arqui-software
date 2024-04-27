@@ -7,17 +7,14 @@ config:
           host: localhost
           port: 8125
           prefix: "artillery-api"
-
+      variables:
+        word:
+          - "monkey"
+          - "word"
+          - "football"
+          - "artillery"
+          - "dream"
   pool: 50 # All HTTP requests from all virtual users will be sent over the same connections
-
-  phases:
-    - name: Ramp
-      duration: 30
-      arrivalRate: 1
-      rampTo: 5
-    - name: Plain
-      duration: 60
-      arrivalRate: 5
     
 
 scenarios:
@@ -29,17 +26,13 @@ scenarios:
   - name: dictionary_base
     flow:
       - get:
-          url: '/dictionary?word=test&cached=false'
-
-  - name: dictionary_cached_base
-    flow:
-      - get:
-          url: '/dictionary?word=test&cached=true'
+          url: '/dictionary?word={{ word }}&cached=false'
 
   - name: spaceflight_news_base
     flow:
       - get:
           url: '/spaceflight_news'
+  
 
   - name: quotes_base
     flow:

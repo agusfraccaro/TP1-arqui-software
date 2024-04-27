@@ -8,6 +8,7 @@ export class Metrics {
             port: 8125,
             prefix: 'api_metrics.'
         });
+        
     }
 
     log(metric_name, value) {
