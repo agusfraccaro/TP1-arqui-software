@@ -36,7 +36,12 @@ scenarios:
       - get:
           url: '/dictionary?word=test&cached=true'
 
-  - name: spaceflight_news
+  - name: spaceflight_news_base
     flow:
       - get:
           url: '/spaceflight_news'
+
+  - name: quotes_base
+    flow:
+      - get:
+          url: '/quote'
