@@ -33,4 +33,4 @@ scenarios:
   - name: base
     flow:
       - get:
-          url: '/dictionary?word={{ word }}&cached=true'
+          url: '/dictionary?word={{ word }}&cached=false'
