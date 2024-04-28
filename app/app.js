@@ -58,7 +58,7 @@ app.get('/dictionary', async (req, res) => {
         const { phonetics, meanings } = response.data[0];
         try {
             console.log(`Saving word on cache: ${word}`);
-            await redisClient.setex(word, 1, JSON.stringify({ phonetics, meanings }));
+            await redisClient.setex(word, 5, JSON.stringify({ phonetics, meanings }));
         } catch (error) {
             console.log(`Error on setting redis value ${error}`);
         }
@@ -67,6 +67,7 @@ app.get('/dictionary', async (req, res) => {
 
         res.status(200).send({ phonetics, meanings });
     } catch(error){
+        console.log(error)
         res.status(500).send(`Error ${error}`);
     }
 });
