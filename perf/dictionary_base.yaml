@@ -1,0 +1,36 @@
+config:
+  environments:
+    api:
+      target: 'http://localhost:5555/api'
+      plugins:
+        statsd:
+          host: localhost
+          port: 8125
+          prefix: "artillery-api"
+      variables:
+        word:
+          - "monkey"
+          - "word"
+          - "football"
+          - "artillery"
+          - "dream"
+          - "soup"
+          - "hand"
+          - "ball"
+          - "water"
+      phases:
+        - name: Ramp
+          duration: 300
+          arrivalRate: 1
+          rampTo: 2
+        - name: Plain
+          duration: 300
+          arrivalRate: 2
+  pool: 50 # All HTTP requests from all virtual users will be sent over the same connections
+    
+
+scenarios:
+  - name: base
+    flow:
+      - get:
+          url: '/dictionary?word={{ word }}&cached=false'
