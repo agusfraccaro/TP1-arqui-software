@@ -75,7 +75,18 @@ app.get('/dictionary', async (req, res) => {
 app.get('/spaceflight_news', async (req, res) => {
     const start = Date.now();
 
+    const {cached} = req.query;
+
     try {
+        // Get cached data
+        if (cached === "true") {
+            const cachedData = await getDataFromRedis('spaceflight news');
+            if (cachedData) {
+                await metricsClient.send_cache_hit_metric();
+                console.log(`Data was gathered from the cache for news`);
+                return res.status(200).send(JSON.parse(cachedData));
+            }
+        }
         const response = await metricsClient.measure_dependency(req.path, async () => {
             return await axios.get('https://api.spaceflightnewsapi.net/v4/articles', {
                 params: {
@@ -91,6 +102,15 @@ app.get('/spaceflight_news', async (req, res) => {
                 titles.push(article.title);
             }
         });
+
+        console.log('Data was gathered from the service for spaceflight news');
+        try {
+            console.log('Saving news on cache');
+            // Save for 5 mins
+            await redisClient.setex('spaceflight news', 5 * 60, JSON.stringify(titles));
+        } catch (error) {
+            console.log(`Error on setting redis value of spaceflight news`);
+        }
 
         res.status(200).send(titles);
     } catch(error){
