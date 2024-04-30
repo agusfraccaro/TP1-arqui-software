@@ -6,7 +6,10 @@ export class Metrics {
         this.client = new StatsD({
             host: 'graphite',
             port: 8125,
-            prefix: 'api_metrics.'
+            prefix: 'api_metrics.',
+            errorHandler: function (error) {
+                console.log("Socket errors caught here: ", error);
+            }
         });
         
     }
@@ -22,7 +25,7 @@ export class Metrics {
         const duration = end[0] * 1e3 + end[1] * 1e-6;
 
         this.log(`${endpoint.substring(1)}.dependency.time`, duration);
-        console.log(`Dependency duration ${duration}`);
+        //console.log(`Dependency duration ${duration}`);
         return result;
     }
 
@@ -30,10 +33,13 @@ export class Metrics {
         const duration = Date.now() - start_time;
 
         this.log(`${endpoint.substring(1)}.total.time`, duration);
-        console.log(`Total duration ${duration}`);
+        this.client.timing(`${endpoint.substring(1)}.total.time`, duration);
+
+        //console.log(`Total duration ${duration}`);
     }
 
     send_cache_hit_metric() {
         this.log('cache.hit', 1);
+        this.client.increment('cache.hit.increment', 1);
     }
 }
