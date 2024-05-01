@@ -41,5 +41,6 @@ export class Metrics {
     send_cache_hit_metric() {
         this.log('cache.hit', 1);
         this.client.increment('cache.hit.increment', 1);
+        this.client.gauge('cache.hit.increment', 1);
     }
 }
