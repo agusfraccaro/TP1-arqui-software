@@ -6,34 +6,54 @@ export class Metrics {
         this.client = new StatsD({
             host: 'graphite',
             port: 8125,
-            prefix: 'api_metrics.'
+            prefix: 'api_metrics.',
+            errorHandler: function (error) {
+                console.log("Socket errors caught here: ", error);
+            }
         });
         
     }
 
-    log(metric_name, value) {
+    send_gauge(metric_name, value) {
         this.client.gauge(metric_name, value);
     }
 
-    async measure_dependency(endpoint, func) {
-        const start = process.hrtime();
-        const result = await func();
-        const end = process.hrtime(start);
-        const duration = end[0] * 1e3 + end[1] * 1e-6;
+    send_timing(metric_name, value) {
+        this.client.timing(metric_name, value);
+    }
 
-        this.log(`${endpoint.substring(1)}.dependency.time`, duration);
-        console.log(`Dependency duration ${duration}`);
+    send_increment(metric_name, value) {
+        this.client.increment(metric_name, value);
+    }
+
+    async measure_dependency(endpoint, func) {
+        const start_time = Date.now();
+        const result = await func();
+        const duration = Date.now() - start_time;
+
+        this.send_gauge(`${endpoint.substring(1)}.dependency.time`, duration);
+        this.send_timing(`${endpoint.substring(1)}.dependency.time`, duration);
         return result;
     }
 
     send_endpoint_total_time(endpoint, start_time) {
         const duration = Date.now() - start_time;
 
-        this.log(`${endpoint.substring(1)}.total.time`, duration);
-        console.log(`Total duration ${duration}`);
+        this.send_gauge(`${endpoint.substring(1)}.total.time`, duration);
+        this.send_timing(`${endpoint.substring(1)}.total.time`, duration);
     }
 
     send_cache_hit_metric() {
-        this.log('cache.hit', 1);
+        this.send_increment('cache.hit.increment', 1);
+        this.send_gauge('cache.hit', 1);
+    }
+
+    send_request_received_metric(endpoint) {
+        const metric_path = `request.received.increment.${this.format_endpoint_metric(endpoint)}`;
+        this.send_increment(metric_path, 1);
+    }
+
+    format_endpoint_metric(endpoint) {
+        return endpoint.substring(1);
     }
 }

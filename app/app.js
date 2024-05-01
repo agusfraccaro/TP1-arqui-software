@@ -5,7 +5,10 @@ import redis from 'redis';
 import { Metrics } from './metrics.js';
 
 //Const
-
+const errorMessages = {
+    dependencyError: 'Error communicating with the dependency API.',
+    internalError: 'Internal Server Error.'
+};
 
 // Init
 const app = express();
@@ -22,7 +25,8 @@ app.use((req, res, next) => {
     const start = Date.now();
     const endpoint = req.path;
     res.setHeader('X-API-Id', id);
-    
+
+    metricsClient.send_request_received_metric(endpoint);
     res.on('finish', () => {
         metricsClient.send_endpoint_total_time(endpoint, start);
     });
@@ -67,8 +71,7 @@ app.get('/dictionary', async (req, res) => {
 
         res.status(200).send({ phonetics, meanings });
     } catch(error){
-        console.log(error)
-        res.status(500).send(`Error ${error}`);
+        handleError(res, error);
     }
 });
 
@@ -114,7 +117,7 @@ app.get('/spaceflight_news', async (req, res) => {
 
         res.status(200).send(titles);
     } catch(error){
-        res.status(500).send('Error');
+        handleError(res, error);
     }
     
 });
@@ -131,7 +134,7 @@ app.get('/quote', async (req, res) => {
 
         res.status(200).send({ content, author });
     } catch(error){
-        res.status(500).send('Error');
+        handleError(res, error);
     }
 });
 
@@ -148,4 +151,20 @@ function getDataFromRedis(key) {
     });
 }
 
-app.listen(3000, console.log("Escuchando en puerto 3000"));
+function handleError(res, error) {
+    console.log(error);
+    if (error.response) {
+        console.log(`HTTP Error: ${error.response.status} - ${error.response.statusText}`);
+        console.log('Response Data:', error.response.data);
+        res.status(error.response.status).send(error.response.data);
+    } else if (error.request) {
+        // 424 failed dependency
+        console.log('Failed dependency error:', error.request);
+        res.status(424).send(errorMessages.dependencyError);
+    } else {
+        console.log('Internal Error:', error.message);
+        res.status(500).send(errorMessages.internalError);
+    }
+}
+
+app.listen(3000, console.log("Listening on port 3000"));
