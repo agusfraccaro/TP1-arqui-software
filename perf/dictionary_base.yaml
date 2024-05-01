@@ -19,13 +19,13 @@ config:
           - "ball"
           - "water"
       phases:
-        - name: Ramp
-          duration: 300
+        - name: Warm up
+          duration: 180
           arrivalRate: 1
-          rampTo: 2
+          arrivalCount: 180
         - name: Plain
           duration: 300
-          arrivalRate: 2
+          arrivalCount: 350
   pool: 50 # All HTTP requests from all virtual users will be sent over the same connections
     
 

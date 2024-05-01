@@ -25,7 +25,8 @@ app.use((req, res, next) => {
     const start = Date.now();
     const endpoint = req.path;
     res.setHeader('X-API-Id', id);
-    
+
+    metricsClient.send_request_received_metric(endpoint);
     res.on('finish', () => {
         metricsClient.send_endpoint_total_time(endpoint, start);
     });
