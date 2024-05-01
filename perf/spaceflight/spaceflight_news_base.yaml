@@ -12,9 +12,10 @@ config:
           duration: 300
           arrivalRate: 1
           rampTo: 2
-        - name: Plain
+        - name: Ramp
           duration: 300
-          arrivalRate: 2
+          arrivalRate: 1
+          rampTo: 50
   pool: 50 # All HTTP requests from all virtual users will be sent over the same connections
     
 
@@ -22,4 +23,13 @@ scenarios:
   - name: base
     flow:
       - get:
-          url: '/spaceflight_news?&cached=true'
+          url: '/spaceflight_news'
+          qs:
+            cached: false
+
+  - name: base_cached
+    flow:
+      - get:
+          url: '/spaceflight_news'
+          qs:
+            cached: true
