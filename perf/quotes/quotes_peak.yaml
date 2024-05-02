@@ -21,7 +21,7 @@ config:
           duration: 60
           arrivalCount: 150
         - name: Ramp
-          arrivalRate: 2.5
+          arrivalRate: 2
           rampTo: 5
           duration: 180
   pool: 50 # All HTTP requests from all virtual users will be sent over the same connections
@@ -31,4 +31,4 @@ scenarios:
   - name: peak
     flow:
       - get:
-          url: '/quotes'
+          url: '/quote'
