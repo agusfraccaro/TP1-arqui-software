@@ -1,4 +1,4 @@
-import {nanoid} from 'nanoid';
+import { nanoid } from 'nanoid';
 import express from 'express';
 import axios from 'axios';
 import redis from 'redis';
@@ -18,7 +18,7 @@ const redisClient = redis.createClient({
 });
 
 const id = nanoid();
-const metricsClient = new Metrics() ;
+const metricsClient = new Metrics();
 
 // Middleware
 app.use((req, res, next) => {
@@ -38,10 +38,10 @@ app.get('/ping', (req, res) => {
 });
 
 app.get('/dictionary', async (req, res) => {
-    
 
-    const {word} = req.query;
-    const {cached} = req.query;
+
+    const { word } = req.query;
+    const { cached } = req.query;
     if (!word) {
         return res.status(400).send('Missing word query param');
     }
@@ -62,15 +62,16 @@ app.get('/dictionary', async (req, res) => {
         const { phonetics, meanings } = response.data[0];
         try {
             console.log(`Saving word on cache: ${word}`);
-            await redisClient.setex(word, 5, JSON.stringify({ phonetics, meanings }));
+            // Save for 30 mins
+            await redisClient.setex(word, 30 * 60, JSON.stringify({ phonetics, meanings }));
         } catch (error) {
             console.log(`Error on setting redis value ${error}`);
         }
-        
+
         console.log(`Data was gathered from the service for word: ${word}`);
 
         res.status(200).send({ phonetics, meanings });
-    } catch(error){
+    } catch (error) {
         handleError(res, error);
     }
 });
@@ -78,7 +79,7 @@ app.get('/dictionary', async (req, res) => {
 app.get('/spaceflight_news', async (req, res) => {
     const start = Date.now();
 
-    const {cached} = req.query;
+    const { cached } = req.query;
 
     try {
         // Get cached data
@@ -116,10 +117,10 @@ app.get('/spaceflight_news', async (req, res) => {
         }
 
         res.status(200).send(titles);
-    } catch(error){
+    } catch (error) {
         handleError(res, error);
     }
-    
+
 });
 
 app.get('/quote', async (req, res) => {
@@ -133,7 +134,7 @@ app.get('/quote', async (req, res) => {
         const { content, author } = response.data;
 
         res.status(200).send({ content, author });
-    } catch(error){
+    } catch (error) {
         handleError(res, error);
     }
 });
@@ -143,7 +144,7 @@ function getDataFromRedis(key) {
         redisClient.get(key, (err, data) => {
             if (err) {
                 console.error('Error getting data from Redis:', err);
-                reject(err); 
+                reject(err);
             } else {
                 resolve(data);
             }
