@@ -24,6 +24,10 @@ config:
           arrivalRate: 2
           rampTo: 5
           duration: 180
+        - name: Ramp
+          arrivalRate: 5
+          rampTo: 10
+          duration: 180
   pool: 50 # All HTTP requests from all virtual users will be sent over the same connections
     
 
