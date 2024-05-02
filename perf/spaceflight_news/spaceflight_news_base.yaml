@@ -8,14 +8,13 @@ config:
           port: 8125
           prefix: "artillery-api"
       phases:
+        - name: Warm up
+          duration: 180
+          arrivalCount: 60
         - name: Ramp
-          duration: 300
+          duration: 240
           arrivalRate: 1
-          rampTo: 2
-        - name: Ramp
-          duration: 300
-          arrivalRate: 1
-          rampTo: 50
+          rampTo: 5
   pool: 50 # All HTTP requests from all virtual users will be sent over the same connections
     
 
@@ -24,12 +23,3 @@ scenarios:
     flow:
       - get:
           url: '/spaceflight_news'
-          qs:
-            cached: false
-
-  - name: base_cached
-    flow:
-      - get:
-          url: '/spaceflight_news'
-          qs:
-            cached: true
