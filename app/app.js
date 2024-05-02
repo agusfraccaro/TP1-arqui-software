@@ -110,8 +110,8 @@ app.get('/spaceflight_news', async (req, res) => {
         console.log('Data was gathered from the service for spaceflight news');
         try {
             console.log('Saving news on cache');
-            // Save for 5 mins
-            await redisClient.setex('spaceflight news', 5 * 60, JSON.stringify(titles));
+            // Save for 30 secs
+            await redisClient.setex('spaceflight news', 30, JSON.stringify(titles));
         } catch (error) {
             console.log(`Error on setting redis value of spaceflight news`);
         }

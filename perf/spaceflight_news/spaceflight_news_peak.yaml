@@ -29,7 +29,7 @@ config:
           rampTo: 55
         - name: Plain
           duration: 30
-          arrivalRate: 55
+          arrivalRate: 60
   pool: 50 # All HTTP requests from all virtual users will be sent over the same connections
     
 
