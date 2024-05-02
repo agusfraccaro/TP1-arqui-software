@@ -21,4 +21,4 @@ scenarios:
   - name: base
     flow:
       - get:
-          url: '/quotes'
+          url: '/quote'
