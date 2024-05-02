@@ -1174,6 +1174,108 @@
       "type": "timeseries"
     },
     {
+      "datasource": "Graphite",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 51
+      },
+      "id": 38,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": "Graphite",
+          "refCount": 0,
+          "refId": "A",
+          "target": "alias(stats.timers.api_metrics.quote.dependency.time.median, 'median (ms)')",
+          "textEditor": false
+        },
+        {
+          "datasource": "Graphite",
+          "hide": false,
+          "refCount": 0,
+          "refId": "B",
+          "target": "alias(stats.timers.api_metrics.quote.dependency.time.upper_90, 'p90 (ms)')",
+          "textEditor": false
+        },
+        {
+          "datasource": "Graphite",
+          "hide": false,
+          "refCount": 0,
+          "refId": "C",
+          "target": "alias(stats.timers.api_metrics.quote.dependency.time.mean, 'avg (ms)')",
+          "textEditor": false
+        }
+      ],
+      "title": "Quotes - Dependency response time (timing)",
+      "type": "timeseries"
+    },
+    {
       "collapsed": true,
       "gridPos": {
         "h": 1,
@@ -2717,7 +2819,7 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -2748,6 +2850,6 @@
   "timezone": "",
   "title": "Main dashboard",
   "uid": "arxIPammk",
-  "version": 13,
+  "version": 14,
   "weekStart": ""
 }
