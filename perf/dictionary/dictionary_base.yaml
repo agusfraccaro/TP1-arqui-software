@@ -36,4 +36,4 @@ scenarios:
           url: '/dictionary'
           qs:
             word: "{{word}}"
-            cached: true
+            cached: false
